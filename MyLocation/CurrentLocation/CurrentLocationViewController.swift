@@ -44,6 +44,14 @@ class CurrentLocationViewController: UIViewController {
         updateLabels()
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
 
     //----------------------------------------------------------------------------------------
     // MARK: - Actions
@@ -68,6 +76,17 @@ class CurrentLocationViewController: UIViewController {
         
         updateLabels()
     }
+    
+    //----------------------------------------------------------------------------------------
+    // MARK: - Navigation
+    //----------------------------------------------------------------------------------------
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "TagLocation", let vc = segue.destination as? LocationDetailViewController{
+            vc.coordinate = location!.coordinate
+            vc.placemark = placemark
+        }
+    }
+    
     //----------------------------------------------------------------------------------------
     // MARK: - methods
     //----------------------------------------------------------------------------------------
@@ -115,7 +134,7 @@ class CurrentLocationViewController: UIViewController {
             messageLabel.text = ""
             
             if let placemark = placemark{
-                addressLabel.text = string(from: placemark)
+                addressLabel.text = Helper.current.string(from: placemark)
             } else if performingReverceGeoCoding {
                 addressLabel.text = "Searchng for address..."
             } else if lastGeoCodingError == nil{
@@ -148,24 +167,24 @@ class CurrentLocationViewController: UIViewController {
         }
         configureGetButton()
     }
-    func string(from placemark: CLPlacemark) -> String{
-        var line1 = ""
-        if let subThoroughfare = placemark.subThoroughfare{
-            line1 += subThoroughfare + " "
-        }
-        if let thouroughfare = placemark.thoroughfare{
-            line1 += thouroughfare
-        }
-        var line2 = ""
-        if let city = placemark.locality{
-            line2 += city + " "
-        }
-        if let postalCode = placemark.postalCode{
-            line2 += postalCode
-        }
-        
-        return line1 + "\n" + line2
-    }
+//    func string(from placemark: CLPlacemark) -> String{
+//        var line1 = ""
+//        if let subThoroughfare = placemark.subThoroughfare{
+//            line1 += subThoroughfare + " "
+//        }
+//        if let thouroughfare = placemark.thoroughfare{
+//            line1 += thouroughfare
+//        }
+//        var line2 = ""
+//        if let city = placemark.locality{
+//            line2 += city + " "
+//        }
+//        if let postalCode = placemark.postalCode{
+//            line2 += postalCode
+//        }
+//        
+//        return line1 + "\n" + line2
+//    }
     
     func configureGetButton(){
         if updatingLocation{

@@ -1,0 +1,74 @@
+//
+//  LocationDetailViewController.swift
+//  MyLocation
+//
+//  Created by Миляев Максим on 14.04.2022.
+//
+
+import UIKit
+import CoreLocation
+
+class LocationDetailViewController: UITableViewController {
+    
+    @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var latitudeLabel: UILabel!
+    @IBOutlet weak var longitudeLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    
+    var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+    var placemark: CLPlacemark?
+    
+    var category = "No category"
+    
+    //----------------------------------------------------------------------------------------
+    // MARK: - life cycle
+    //----------------------------------------------------------------------------------------
+    override func viewDidLoad() {
+        descriptionTextView.text = ""
+        categoryLabel.text = category
+        
+        latitudeLabel.text = String(format: "%.6f",  coordinate.latitude)
+        longitudeLabel.text = String(format: "%.6f",  coordinate.longitude)
+        if let placemark = placemark{
+            addressLabel.text = Helper.current.string(from: placemark)
+        } else {
+            addressLabel.text = "No address found"
+        }
+        dateLabel.text = Helper.current.dateFormatter.string(from: Date())
+    }
+    //----------------------------------------------------------------------------------------
+    // MARK: - Navigation
+    //----------------------------------------------------------------------------------------
+    @IBAction func categoryPickerDidPickCategory(_ segue: UIStoryboardSegue){
+        if let souceVC = segue.source as? CategoryPickerTableViewController{
+            category = souceVC.selectedCategoryName
+            categoryLabel.text = category
+            print(category)
+        }
+        
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "PickerSegue", let vc = segue.destination as? CategoryPickerTableViewController{
+            vc.selectedCategoryName = category
+        }
+    }
+    //----------------------------------------------------------------------------------------
+    // MARK: - Actions
+    //----------------------------------------------------------------------------------------
+    @IBAction func done(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func cancel(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+}
+
+
+
+extension LocationDetailViewController {
+    
+}
