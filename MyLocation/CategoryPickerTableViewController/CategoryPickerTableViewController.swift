@@ -40,15 +40,26 @@ let categories = [ "No category",
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath)
-        if let textLabel = cell.contentView.subviews.first as? UILabel {
-            textLabel.text = categories[indexPath.row]
-            if textLabel.text == selectedCategoryName{
-                cell.accessoryType = .checkmark
-            } else{
-                cell.accessoryType = .none
-            }
+       
+        var content = cell.defaultContentConfiguration()
+        content.text = categories[indexPath.row]
+        cell.contentConfiguration = content
+
+        if content.text == selectedCategoryName{
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
         }
         
+//        if let textLabel = cell.contentView.subviews.first as? UILabel {
+//            textLabel.text = categories[indexPath.row]
+//            if textLabel.text == selectedCategoryName{
+//                cell.accessoryType = .checkmark
+//            } else{
+//                cell.accessoryType = .none
+//            }
+//        }
+   
 
         return cell
     }

@@ -37,7 +37,28 @@ class LocationDetailViewController: UITableViewController {
             addressLabel.text = "No address found"
         }
         dateLabel.text = Helper.current.dateFormatter.string(from: Date())
+        
+        let gestRecognizer = UITapGestureRecognizer(target: self,
+                                                    action: #selector(hideKeyboard))
+        gestRecognizer.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(gestRecognizer)
     }
+    //----------------------------------------------------------------------------------------
+    // MARK: - methods
+    //----------------------------------------------------------------------------------------
+    @objc func hideKeyboard(_ gestureRecognizer: UITapGestureRecognizer){
+        let point = gestureRecognizer.location(in: tableView)
+        if let indexPath = tableView.indexPathForRow(at: point){
+            if indexPath.section == 0 && indexPath.row == 0{
+                return
+            } else {
+                descriptionTextView.resignFirstResponder()
+            }
+        } else {
+            descriptionTextView.resignFirstResponder()
+        }
+    }
+    
     //----------------------------------------------------------------------------------------
     // MARK: - Navigation
     //----------------------------------------------------------------------------------------
@@ -65,10 +86,20 @@ class LocationDetailViewController: UITableViewController {
         navigationController?.popViewController(animated: true)
     }
     
-}
-
-
-
-extension LocationDetailViewController {
+    //----------------------------------------------------------------------------------------
+    // MARK: - table view delegate
+    //----------------------------------------------------------------------------------------
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if indexPath.section == 0  || indexPath.section == 1{
+            return indexPath
+        } else {
+            return nil
+        }
+    }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 && indexPath.row == 0{
+            descriptionTextView.becomeFirstResponder()
+        }
+    }
 }
