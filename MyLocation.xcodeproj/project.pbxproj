@@ -14,6 +14,9 @@
 		297E36222802CE7A009E4800 /* MyLocation.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 297E36202802CE7A009E4800 /* MyLocation.xcdatamodeld */; };
 		297E36242802CE7B009E4800 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 297E36232802CE7B009E4800 /* Assets.xcassets */; };
 		297E36272802CE7B009E4800 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 297E36252802CE7B009E4800 /* LaunchScreen.storyboard */; };
+		297E36312808091C009E4800 /* LocationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E36302808091C009E4800 /* LocationDetailViewController.swift */; };
+		297E363428081F5D009E4800 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E363328081F5D009E4800 /* Helper.swift */; };
+		297E3638280826ED009E4800 /* CategoryPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E3637280826ED009E4800 /* CategoryPickerTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		297E36232802CE7B009E4800 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		297E36262802CE7B009E4800 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		297E36282802CE7B009E4800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		297E36302808091C009E4800 /* LocationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailViewController.swift; sourceTree = "<group>"; };
+		297E363328081F5D009E4800 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		297E3637280826ED009E4800 /* CategoryPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPickerTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +66,10 @@
 			children = (
 				297E36172802CE79009E4800 /* AppDelegate.swift */,
 				297E36192802CE79009E4800 /* SceneDelegate.swift */,
+				297E363528081F7A009E4800 /* Utils */,
 				297E362F2802D0E5009E4800 /* CurrentLocation */,
+				297E363228080932009E4800 /* LocationDetailViewController */,
+				297E3636280826B5009E4800 /* CategoryPickerTableViewController */,
 				297E362E2802D0D4009E4800 /* Storyboards */,
 				297E36232802CE7B009E4800 /* Assets.xcassets */,
 				297E36282802CE7B009E4800 /* Info.plist */,
@@ -84,6 +93,30 @@
 				297E361B2802CE79009E4800 /* CurrentLocationViewController.swift */,
 			);
 			path = CurrentLocation;
+			sourceTree = "<group>";
+		};
+		297E363228080932009E4800 /* LocationDetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				297E36302808091C009E4800 /* LocationDetailViewController.swift */,
+			);
+			path = LocationDetailViewController;
+			sourceTree = "<group>";
+		};
+		297E363528081F7A009E4800 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				297E363328081F5D009E4800 /* Helper.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		297E3636280826B5009E4800 /* CategoryPickerTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				297E3637280826ED009E4800 /* CategoryPickerTableViewController.swift */,
+			);
+			path = CategoryPickerTableViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +194,9 @@
 				297E36182802CE79009E4800 /* AppDelegate.swift in Sources */,
 				297E36222802CE7A009E4800 /* MyLocation.xcdatamodeld in Sources */,
 				297E361A2802CE79009E4800 /* SceneDelegate.swift in Sources */,
+				297E3638280826ED009E4800 /* CategoryPickerTableViewController.swift in Sources */,
+				297E36312808091C009E4800 /* LocationDetailViewController.swift in Sources */,
+				297E363428081F5D009E4800 /* Helper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
