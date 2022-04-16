@@ -7,9 +7,13 @@
 
 import UIKit
 import CoreLocation
+import CoreData
 
 class CurrentLocationViewController: UIViewController {
     
+    // core data object context
+    var managedObjectContext: NSManagedObjectContext!
+
     //location obtain and errors
     let locationManager = CLLocationManager()
     var location: CLLocation?
@@ -84,6 +88,7 @@ class CurrentLocationViewController: UIViewController {
         if segue.identifier == "TagLocation", let vc = segue.destination as? LocationDetailViewController{
             vc.coordinate = location!.coordinate
             vc.placemark = placemark
+            vc.managedObjectContext = managedObjectContext
         }
     }
     

@@ -50,17 +50,6 @@ let categories = [ "No category",
         } else {
             cell.accessoryType = .none
         }
-        
-//        if let textLabel = cell.contentView.subviews.first as? UILabel {
-//            textLabel.text = categories[indexPath.row]
-//            if textLabel.text == selectedCategoryName{
-//                cell.accessoryType = .checkmark
-//            } else{
-//                cell.accessoryType = .none
-//            }
-//        }
-   
-
         return cell
     }
     
