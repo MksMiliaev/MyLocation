@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import CoreData
 
 class LocationDetailViewController: UITableViewController {
     
@@ -22,6 +23,9 @@ class LocationDetailViewController: UITableViewController {
     
     var category = "No category"
     
+    // core data object context
+    var managedObjectContext: NSManagedObjectContext!
+
     //----------------------------------------------------------------------------------------
     // MARK: - life cycle
     //----------------------------------------------------------------------------------------
@@ -79,7 +83,16 @@ class LocationDetailViewController: UITableViewController {
     // MARK: - Actions
     //----------------------------------------------------------------------------------------
     @IBAction func done(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
+//        navigationController?.popViewController(animated: true)
+        guard let mainView = navigationController?.parent?.view else { return }
+        let hudView = HudView.hud(inView: mainView, animated: true)
+        hudView.text = "Tagged"
+        let delayInSec = 0.6
+        afterDelay(sec: delayInSec) {
+            hudView.hide(completionHandler: {
+                self.navigationController?.popViewController(animated: true)
+            })
+        }
     }
     
     @IBAction func cancel(_ sender: Any) {
