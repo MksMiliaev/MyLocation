@@ -63,7 +63,7 @@ class HudView: UIView {
                            completion: nil)
         }
     }
-    func hide(completionHandler: (() -> ())?){
+    func hide(completionHandler: @escaping () -> Void ){
         UIView.animate(withDuration: 0.1,
                        delay: 0,
                        options: [] ,
@@ -74,7 +74,7 @@ class HudView: UIView {
                        completion: { _ in
             self.superview?.isUserInteractionEnabled = true
             self.removeFromSuperview()
-            completionHandler?()
+            completionHandler()
         })
         
     }

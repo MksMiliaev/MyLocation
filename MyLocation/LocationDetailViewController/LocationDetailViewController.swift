@@ -18,10 +18,26 @@ class LocationDetailViewController: UITableViewController {
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     
+    //edit state
+    var locationToEdit: Location?{
+        didSet{
+            if let location = locationToEdit{
+                descriptionText = location.locationDescription
+                category = location.category
+                placemark = location.placemark
+                date = location.date
+                coordinate = CLLocationCoordinate2D(latitude: location.latitude,
+                                                    longitude: location.longitude)
+            }
+        }
+    }
+    
+    //
     var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
     var placemark: CLPlacemark?
-    
     var category = "No category"
+    var date = Date()
+    var descriptionText = ""
     
     // core data object context
     var managedObjectContext: NSManagedObjectContext!
@@ -30,7 +46,11 @@ class LocationDetailViewController: UITableViewController {
     // MARK: - life cycle
     //----------------------------------------------------------------------------------------
     override func viewDidLoad() {
-        descriptionTextView.text = ""
+        super.viewDidLoad()
+        if locationToEdit != nil{
+            title = "Edit Location"
+        }
+        descriptionTextView.text = descriptionText
         categoryLabel.text = category
         
         latitudeLabel.text = String(format: "%.6f",  coordinate.latitude)
@@ -40,7 +60,8 @@ class LocationDetailViewController: UITableViewController {
         } else {
             addressLabel.text = "No address found"
         }
-        dateLabel.text = Helper.current.dateFormatter.string(from: Date())
+        dateLabel.text = Helper.current.dateFormatter.string(from: date)
+        
         
         let gestRecognizer = UITapGestureRecognizer(target: self,
                                                     action: #selector(hideKeyboard))
@@ -83,15 +104,34 @@ class LocationDetailViewController: UITableViewController {
     // MARK: - Actions
     //----------------------------------------------------------------------------------------
     @IBAction func done(_ sender: Any) {
-//        navigationController?.popViewController(animated: true)
         guard let mainView = navigationController?.parent?.view else { return }
         let hudView = HudView.hud(inView: mainView, animated: true)
+        let location: Location
+        
+        if let temp = locationToEdit{
+            hudView.text = "Updated"
+            location = temp
+        } else {
+        location = Location(context: managedObjectContext)
         hudView.text = "Tagged"
-        let delayInSec = 0.6
-        afterDelay(sec: delayInSec) {
-            hudView.hide(completionHandler: {
-                self.navigationController?.popViewController(animated: true)
-            })
+        }
+        
+        location.locationDescription = descriptionTextView.text
+        location.latitude = coordinate.latitude
+        location.longitude = coordinate.longitude
+        location.category = category
+        location.date = date
+        location.placemark = placemark
+        
+        do{
+            try managedObjectContext.save()
+            afterDelay(sec: 0.6) {
+                hudView.hide(completionHandler: {
+                    self.navigationController?.popViewController(animated: true)
+                })
+            }
+        } catch {
+            fatalCoreDataError(error)
         }
     }
     
