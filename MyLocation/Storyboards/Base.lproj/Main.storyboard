@@ -229,11 +229,12 @@
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="GtQ-Mp-BfZ" id="5zY-xu-eCc"/>
+                        <segue destination="cHF-0q-L2t" kind="show" identifier="EditLocationSegue" id="Bdi-N7-rqf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DVy-Dn-Q01" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1883" y="1580"/>
+            <point key="canvasLocation" x="1883" y="1571"/>
         </scene>
         <!--Tag Location-->
         <scene sceneID="lWJ-7F-cEi">
@@ -552,7 +553,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="m3F-zW-mF3"/>
+        <segue reference="Bdi-N7-rqf"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">

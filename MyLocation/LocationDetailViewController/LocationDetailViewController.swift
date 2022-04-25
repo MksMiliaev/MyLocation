@@ -8,9 +8,10 @@
 import UIKit
 import CoreLocation
 import CoreData
+import PhotosUI
 
 class LocationDetailViewController: UITableViewController {
-    
+   
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var latitudeLabel: UILabel!
@@ -151,8 +152,49 @@ class LocationDetailViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 && indexPath.row == 0{
             descriptionTextView.becomeFirstResponder()
+        } else if indexPath.section == 1 &&  indexPath.row == 0 {
+            takePhotoFromLibrary()
         }
+    }
+}
+
+//----------------------------------------------------------------------------------------
+// MARK: - UIImagePickerControllerDelegate
+//----------------------------------------------------------------------------------------
+extension LocationDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    func takePhotoWithCamera(){
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        present(imagePicker,
+                animated: true,
+                completion: nil)
+    }
+}
+
+//----------------------------------------------------------------------------------------
+// MARK: - PHPickerViewControllerDelegate
+//----------------------------------------------------------------------------------------
+extension LocationDetailViewController: PHPickerViewControllerDelegate{
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        //TODO: handle selected image
+        
+        
+    }
+    func takePhotoFromLibrary(){
+        let configuration = PHPickerConfiguration(photoLibrary: .shared())
+        let imagePicker = PHPickerViewController(configuration: configuration)
+        imagePicker.delegate = self
+        present(imagePicker, animated: true, completion: nil)
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        dismiss(animated: true, completion: nil)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }
