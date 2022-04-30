@@ -19,6 +19,10 @@ class LocationDetailViewController: UITableViewController {
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var addPhotoLabel: UILabel!
+    
+    @IBOutlet weak var imageViewHeight: NSLayoutConstraint!
     //edit state
     var locationToEdit: Location?{
         didSet{
@@ -39,9 +43,13 @@ class LocationDetailViewController: UITableViewController {
     var category = "No category"
     var date = Date()
     var descriptionText = ""
+    var image: UIImage?
     
     // core data object context
     var managedObjectContext: NSManagedObjectContext!
+    
+    //observer
+    var observer: Any?
 
     //----------------------------------------------------------------------------------------
     // MARK: - life cycle
@@ -68,6 +76,13 @@ class LocationDetailViewController: UITableViewController {
                                                     action: #selector(hideKeyboard))
         gestRecognizer.cancelsTouchesInView = false
         tableView.addGestureRecognizer(gestRecognizer)
+        listenForBackgroundNotification()
+    }
+    deinit {
+        print("*** deinit \(self)")
+        if let observer = observer {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     //----------------------------------------------------------------------------------------
     // MARK: - methods
@@ -85,6 +100,55 @@ class LocationDetailViewController: UITableViewController {
         }
     }
     
+    func show(image: UIImage){
+        let aR = image.size.width / image.size.height
+        addPhotoLabel.text = ""
+        imageView.contentMode = .scaleAspectFit
+        imageView.alpha = 0
+        imageView.isHidden = false
+        tableView.beginUpdates()
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       options: [.curveEaseInOut]) {
+            self.imageViewHeight.constant = aR > 0 ? 365 / aR : 365 * aR
+            self.imageView.image = image
+            self.imageView.alpha = 1
+        } completion: { _ in
+            
+        }
+        tableView.endUpdates()
+
+    }
+    func showPhotoMenu(){
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+            self.takePhotoWithCamera()
+        }
+        alertController.addAction(cameraAction)
+        let libraryAction = UIAlertAction(title: "Media Library", style: .default) { _ in
+            self.takePhotoFromLibrary()
+        }
+        alertController.addAction(libraryAction)
+        } else {
+            takePhotoFromLibrary()
+        }
+    }
+    func listenForBackgroundNotification(){
+        observer = NotificationCenter.default.addObserver(forName: UIScene.didEnterBackgroundNotification,
+                                                          object: nil,
+                                                          queue: OperationQueue.main) { [weak self] _ in
+            if let weakSelf = self{
+                if weakSelf.presentedViewController != nil {
+                    weakSelf.dismiss(animated: true, completion: nil)
+                }
+                weakSelf.descriptionTextView.resignFirstResponder()
+            }
+        }
+    }
     //----------------------------------------------------------------------------------------
     // MARK: - Navigation
     //----------------------------------------------------------------------------------------
@@ -156,7 +220,7 @@ class LocationDetailViewController: UITableViewController {
         if indexPath.section == 0 && indexPath.row == 0{
             descriptionTextView.becomeFirstResponder()
         } else if indexPath.section == 1 &&  indexPath.row == 0 {
-            takePhotoFromLibrary()
+            showPhotoMenu()
         }
     }
 }
@@ -182,19 +246,42 @@ extension LocationDetailViewController: UIImagePickerControllerDelegate, UINavig
 extension LocationDetailViewController: PHPickerViewControllerDelegate{
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         //TODO: handle selected image
-        
-        
+        if !results.isEmpty{
+            results[0].itemProvider.loadObject(ofClass: UIImage.self) {[weak self] image, error in
+                
+                if let image = image as? UIImage{
+                    self?.image = image
+                    DispatchQueue.main.async {
+                        //
+//                        let aR = image.size.width / image.size.height
+//                        self?.addPhotoLabel.text = ""
+//                        self?.imageView.contentMode = .scaleAspectFit
+//                        self?.imageViewHeight.constant = aR > 0 ? 365 / aR : 365 * aR
+//                        self?.imageView.image = image
+//                        self?.tableView.reloadData()
+                        //
+                        self?.show(image: image)
+                    }
+                }
+                if let error = error {
+                    print("error: \(error.localizedDescription)")
+                }
+            }
+        }
+        dismiss(animated: true, completion: nil)
     }
     func takePhotoFromLibrary(){
-        let configuration = PHPickerConfiguration(photoLibrary: .shared())
+        var configuration = PHPickerConfiguration(photoLibrary: .shared())
+        configuration.selectionLimit = 1
+        configuration.filter = .images
         let imagePicker = PHPickerViewController(configuration: configuration)
         imagePicker.delegate = self
         present(imagePicker, animated: true, completion: nil)
     }
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        dismiss(animated: true, completion: nil)
-    }
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        dismiss(animated: true, completion: nil)
+//    }
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        dismiss(animated: true, completion: nil)
+//    }
 }
