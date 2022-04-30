@@ -64,13 +64,23 @@ class LocationDetailViewController: UITableViewController {
         
         latitudeLabel.text = String(format: "%.6f",  coordinate.latitude)
         longitudeLabel.text = String(format: "%.6f",  coordinate.longitude)
+        dateLabel.text = Helper.current.dateFormatter.string(from: date)
+        
+        if let location = locationToEdit {
+            if location.hasPhoto {
+                if let thePhoto = location.photoImage{
+                    show(image: thePhoto)
+                }
+            }
+        }
+
         if let placemark = placemark{
             addressLabel.text = Helper.current.string(from: placemark)
         } else {
             addressLabel.text = "No address found"
         }
-        dateLabel.text = Helper.current.dateFormatter.string(from: date)
         
+
         
         let gestRecognizer = UITapGestureRecognizer(target: self,
                                                     action: #selector(hideKeyboard))
@@ -177,8 +187,9 @@ class LocationDetailViewController: UITableViewController {
             hudView.text = "Updated"
             location = temp
         } else {
-        location = Location(context: managedObjectContext)
-        hudView.text = "Tagged"
+            location = Location(context: managedObjectContext)
+            hudView.text = "Tagged"
+            location.photoID = nil
         }
         
         location.locationDescription = descriptionTextView.text
@@ -187,6 +198,20 @@ class LocationDetailViewController: UITableViewController {
         location.category = category
         location.date = date
         location.placemark = placemark
+        
+        //save image
+        if let image = image {
+            if !location.hasPhoto {
+                location.photoID = location.nextPhotoID() as NSNumber
+            }
+            if let data = image.jpegData(compressionQuality: 0.5){
+                do {
+                try data.write(to: location.photoURL, options: .atomic)
+                } catch let error {
+                    print("error writing image file: \(error.localizedDescription)")
+                }
+            }
+        }
         
         do{
             try managedObjectContext.save()

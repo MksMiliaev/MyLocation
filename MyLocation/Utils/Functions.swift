@@ -7,10 +7,11 @@
 
 import Foundation
 
-let applicationDirectory: URL = {
+let applicationDocumentDirectory: URL = {
     let paths = FileManager.default.urls(
         for: .documentDirectory,
         in: .userDomainMask)
+    print("**** path = \(paths[0])")
     return paths[0]
 }()
 

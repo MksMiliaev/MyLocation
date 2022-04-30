@@ -34,16 +34,12 @@ class MapViewcontroller: UIViewController{
         super.viewDidLoad()
         mapView.delegate = self
         updateLocations()
-//        mapView.showsUserLocation = true
 
         if !locations.isEmpty{
             showLocation()
         }
-
     }
-    
-    
-    
+
     //----------------------------------------------------------------------------------------
     // MARK: - Helper methods
     //----------------------------------------------------------------------------------------
@@ -142,12 +138,13 @@ extension MapViewcontroller: MKMapViewDelegate{
         guard annotation is Location else { return nil }
         
         let identifier = "Location"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
         if annotationView == nil {
             let markerView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             markerView.isEnabled = true
             markerView.canShowCallout = true
             markerView.animatesWhenAdded = true
+            markerView.clusteringIdentifier = identifier
             markerView.markerTintColor = UIColor(red: 0.32,
                                                  green: 0.82,
                                                  blue: 0.4,
@@ -162,9 +159,9 @@ extension MapViewcontroller: MKMapViewDelegate{
             annotationView = markerView
         }
         
-        if let annotationView = annotationView {
-            annotationView.annotation = annotation
-            let button = annotationView.rightCalloutAccessoryView as! UIButton
+        if let annotationViewUnwrp = annotationView {
+            annotationViewUnwrp.annotation = annotation
+            let button = annotationViewUnwrp.rightCalloutAccessoryView as! UIButton
             if let index = locations.firstIndex(of: annotation as! Location){
                 button.tag = index
             }
