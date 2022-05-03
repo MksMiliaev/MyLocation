@@ -18,11 +18,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
         guard let _ = (scene as? UIWindowScene) else { return }
-        if let tabBarController = window?.rootViewController as? UITabBarController,
-           let navigationController = tabBarController.viewControllers?.first as? UINavigationController,
-           let locationController = navigationController.viewControllers.first as? CurrentLocationViewController{
-            locationController.managedObjectContext = managedObjectContext
+        if let tabViewController = window?.rootViewController as? UITabBarController{
+            //firt tab
+            var navigationController = tabViewController.viewControllers?[0] as! UINavigationController
+            let currentLocationViewController = navigationController.viewControllers.first as! CurrentLocationViewController
+            currentLocationViewController.managedObjectContext = managedObjectContext
+            
+            //second tab
+            navigationController = tabViewController.viewControllers?[1] as! UINavigationController
+            let locationsTableViewController = navigationController.viewControllers.first as! LocationsTableViewcontroller
+            locationsTableViewController.managedObjectContext = managedObjectContext
+            
+            //third tab
+            navigationController = tabViewController.viewControllers?[2] as! UINavigationController
+            let mapViewController = navigationController.viewControllers.first as! MapViewcontroller
+            mapViewController.managedObjectContext = managedObjectContext
         }
+
+        listenForFatalCoreDataNotifications()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -66,6 +79,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
     }
+    //----------------------------------------------------------------------------------------
+    // MARK: - Helper methods
+    //----------------------------------------------------------------------------------------
+    func listenForFatalCoreDataNotifications(){
+        NotificationCenter.default.addObserver(forName: dataSaveFailedNotification,
+                                               object: nil,
+                                               queue: OperationQueue.main) { _ in
+            let message = """
+            There was a fatal error in the app and it canot be continue.
 
+            Press OK to terminate the app. Sorry for the inconvenience
+            """
+            let alert = UIAlertController(title: "Internal Error",
+                                          message: message,
+                                          preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK",
+                                       style: .default) { _ in
+                let exception = NSException(name: .internalInconsistencyException,
+                                            reason: "Fatal Core Data error",
+                                            userInfo: nil)
+                exception.raise()
+            }
+            alert.addAction(action)
+            
+            if let tabController = self.window?.rootViewController{
+                tabController.present(alert,
+                                      animated: true,
+                                      completion: nil)
+            }
+        }
+    }
 }
 
