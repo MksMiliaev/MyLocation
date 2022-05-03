@@ -45,4 +45,13 @@ public class Location: NSManagedObject, MKAnnotation {
         UserDefaults.standard.set(currentID, forKey: "photoID")
         return currentID
     }
+    func removePhotoFile(){
+        if hasPhoto{
+            do {
+                try FileManager.default.removeItem(at: photoURL)
+            } catch {
+                print("Error removing file: \(error)")
+            }
+        }
+    }
 }

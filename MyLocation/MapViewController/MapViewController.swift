@@ -26,6 +26,7 @@ class MapViewcontroller: UIViewController{
     }
     
     var locations = [Location]()
+    let identifier = "Location"
     
     //----------------------------------------------------------------------------------------
     // MARK: - life cycle
@@ -137,14 +138,12 @@ extension MapViewcontroller: MKMapViewDelegate{
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is Location else { return nil }
         
-        let identifier = "Location"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
         if annotationView == nil {
             let markerView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             markerView.isEnabled = true
             markerView.canShowCallout = true
             markerView.animatesWhenAdded = true
-            markerView.clusteringIdentifier = identifier
             markerView.markerTintColor = UIColor(red: 0.32,
                                                  green: 0.82,
                                                  blue: 0.4,
@@ -168,4 +167,5 @@ extension MapViewcontroller: MKMapViewDelegate{
         }
        return annotationView
     }
+    
 }

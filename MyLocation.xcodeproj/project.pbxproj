@@ -18,6 +18,8 @@
 		297E363428081F5D009E4800 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E363328081F5D009E4800 /* Helper.swift */; };
 		297E3638280826ED009E4800 /* CategoryPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297E3637280826ED009E4800 /* CategoryPickerTableViewController.swift */; };
 		298BA649281149F100BF1AD8 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298BA648281149F100BF1AD8 /* MapViewController.swift */; };
+		299DA756281E7678001E4B4E /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299DA755281E7678001E4B4E /* UIImage+Resize.swift */; };
+		299DA75928211F21001E4B4E /* Sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 299DA75828211F21001E4B4E /* Sound.caf */; };
 		29AB8935280A84D90013A59F /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AB8934280A84D90013A59F /* HudView.swift */; };
 		29AB8937280AA1C20013A59F /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AB8936280AA1C20013A59F /* Functions.swift */; };
 		29AB893A280AA95A0013A59F /* Location+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AB8938280AA95A0013A59F /* Location+CoreDataClass.swift */; };
@@ -40,6 +42,8 @@
 		297E363328081F5D009E4800 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		297E3637280826ED009E4800 /* CategoryPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPickerTableViewController.swift; sourceTree = "<group>"; };
 		298BA648281149F100BF1AD8 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		299DA755281E7678001E4B4E /* UIImage+Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
+		299DA75828211F21001E4B4E /* Sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sound.caf; sourceTree = "<group>"; };
 		29AB8934280A84D90013A59F /* HudView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		29AB8936280AA1C20013A59F /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		29AB8938280AA95A0013A59F /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -80,6 +84,7 @@
 		297E36162802CE79009E4800 /* MyLocation */ = {
 			isa = PBXGroup;
 			children = (
+				299DA75728211F21001E4B4E /* Sound */,
 				297E36172802CE79009E4800 /* AppDelegate.swift */,
 				297E36192802CE79009E4800 /* SceneDelegate.swift */,
 				297E363528081F7A009E4800 /* Utils */,
@@ -127,6 +132,7 @@
 			children = (
 				297E363328081F5D009E4800 /* Helper.swift */,
 				29AB8936280AA1C20013A59F /* Functions.swift */,
+				299DA755281E7678001E4B4E /* UIImage+Resize.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -145,6 +151,14 @@
 				298BA648281149F100BF1AD8 /* MapViewController.swift */,
 			);
 			path = MapViewController;
+			sourceTree = "<group>";
+		};
+		299DA75728211F21001E4B4E /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				299DA75828211F21001E4B4E /* Sound.caf */,
+			);
+			path = Sound;
 			sourceTree = "<group>";
 		};
 		29AB8933280A848D0013A59F /* HudView */ = {
@@ -224,6 +238,7 @@
 			files = (
 				297E36272802CE7B009E4800 /* LaunchScreen.storyboard in Resources */,
 				297E36242802CE7B009E4800 /* Assets.xcassets in Resources */,
+				299DA75928211F21001E4B4E /* Sound.caf in Resources */,
 				297E361F2802CE79009E4800 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -243,6 +258,7 @@
 				297E36222802CE7A009E4800 /* MyLocation.xcdatamodeld in Sources */,
 				297E361A2802CE79009E4800 /* SceneDelegate.swift in Sources */,
 				29AB893E280D31C60013A59F /* LocationsTableViewcontroller.swift in Sources */,
+				299DA756281E7678001E4B4E /* UIImage+Resize.swift in Sources */,
 				29AB8935280A84D90013A59F /* HudView.swift in Sources */,
 				297E3638280826ED009E4800 /* CategoryPickerTableViewController.swift in Sources */,
 				297E36312808091C009E4800 /* LocationDetailViewController.swift in Sources */,
@@ -409,6 +425,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -441,6 +458,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
